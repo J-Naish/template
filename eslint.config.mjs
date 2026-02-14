@@ -1,4 +1,6 @@
 // @ts-check
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import eslint from "@eslint/js";
 import honoConfig from "@hono/eslint-config";
 import { defineConfig } from "eslint/config";
@@ -7,8 +9,13 @@ import tseslint from "typescript-eslint";
 import nextPlugin from "@next/eslint-plugin-next";
 import prettierConfig from "eslint-config-prettier";
 
-const webFiles = ["apps/web/**/*.{js,jsx,ts,tsx}"];
-const serverFiles = ["apps/server/**/*.{js,cjs,mjs,ts,tsx}"];
+const toPosixPath = (value) => value.split(path.sep).join("/");
+const repoRoot = path.dirname(fileURLToPath(import.meta.url));
+const webRootDir = path.join(repoRoot, "apps/web");
+const serverRootDir = path.join(repoRoot, "apps/server");
+
+const webFiles = [`${toPosixPath(webRootDir)}/**/*.{js,jsx,ts,tsx}`];
+const serverFiles = [`${toPosixPath(serverRootDir)}/**/*.{js,cjs,mjs,ts,tsx}`];
 
 const serverHonoConfig = defineConfig({
   files: serverFiles,
@@ -69,7 +76,7 @@ export default defineConfig(
     },
     settings: {
       next: {
-        rootDir: "apps/web/",
+        rootDir: webRootDir,
       },
     },
     rules: {
