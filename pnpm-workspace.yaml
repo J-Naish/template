@@ -6,6 +6,7 @@ nodeLinker: isolated
 
 onlyBuiltDependencies:
   - esbuild
+  - msw
   - sharp
   - unrs-resolver
   - workerd
